@@ -1,0 +1,22 @@
+{
+  "name": "readme_generator",
+  "version": "1.0.0",
+  "description": "Generates a readme.md from the terminal for new projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacoblovins/readme_generator.git"
+  },
+  "author": "Jacob Lovins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacoblovins/readme_generator/issues"
+  },
+  "homepage": "https://github.com/jacoblovins/readme_generator#readme",
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  }
+}
