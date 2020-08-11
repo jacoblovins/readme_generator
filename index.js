@@ -3,79 +3,66 @@ const inquirer = require("inquirer");
 
 async function createReadme() {
     const getAnswers = await inquirer.prompt([
-            {
-                type: "input",
-                message: "Title:",
-                name: "title"
-            },
-            {
-                type: "input",
-                message: "Description:",
-                name: "description"
-            },
-            {
-                type: "input",
-                message: "Installation Instructions:",
-                name: "installation",
-                default: "npm i"
-            },
-            {
-                type: "input",
-                message: "Usage Information:",
-                name: "usage"
-            },
-            {
-                type: "list",
-                message: "License:",
-                name: "license",
-                choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "none"]
-            },
-            {
-                type: "input",
-                message: "Contribution Guidelines:",
-                name: "guidelines"
-            },
-            {
-                type: "input",
-                message: "Test Instructins:",
-                name: "test",
-                default: "npm test"
-            },
-            {
-                type: "input",
-                message: "GitHub Username:",
-                name: "username"
-            },
-            {
-                type: "input",
-                message: "Email Address:",
-                name: "email"
-            }
-        ])
+        {
+            type: "input",
+            message: "Title:",
+            name: "title"
+        },
+        {
+            type: "input",
+            message: "Description:",
+            name: "description"
+        },
+        {
+            type: "input",
+            message: "Installation Instructions:",
+            name: "installation",
+            default: "npm i"
+        },
+        {
+            type: "input",
+            message: "Usage Information:",
+            name: "usage"
+        },
+        {
+            type: "list",
+            message: "License:",
+            name: "license",
+            choices: ["MIT", "APACHE 2.0", "GPLv3", "BSD 3--Clause", "none"]
+        },
+        {
+            type: "input",
+            message: "Contribution Guidelines:",
+            name: "guidelines"
+        },
+        {
+            type: "input",
+            message: "Test Instructins:",
+            name: "test",
+            default: "npm test"
+        },
+        {
+            type: "input",
+            message: "GitHub Username:",
+            name: "username"
+        },
+        {
+            type: "input",
+            message: "Email Address:",
+            name: "email"
+        }
+    ])
+
         .then(function (response) {
 
             const fileName = response.title.toLowerCase().split(' ').join('') + "_README.md";
-            let badge;
-            const badgeFunction = response => {
-                if (response.license === "MIT") {
-                    badge = "![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)";
-                } else if (response.license === "APACHE 2.0") {
-                    badge = "![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)";
-                } else if (response.license === "GPL 3.0") {
-                    badge = "![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)";
-                } else if (response.license === "BSD 3") {
-                    badge = "![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)";
-                } else {
-                    badge = "";
-                }
-            }
-            badgeFunction(response);
+            const badge = response.license.split(' ').join('%20')
 
             const userInput =
                 `# ${response.title}
         
 
-${badge}
+![License](https://img.shields.io/badge/License-${badge}-blue.svg)
                 
 ## Description
 
@@ -102,7 +89,7 @@ ${response.description}
 
 To install necessary dependencies, run the following command:
 
-${response.installation}
+\`\`\` ${response.installation} \`\`\`
 
 
 
@@ -128,7 +115,7 @@ ${response.guidelines}
 
 To run tests, run the following command:
 
-${response.test}
+\`\`\` ${response.test} \`\`\`
 
 
 
