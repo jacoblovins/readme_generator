@@ -2,8 +2,7 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 
 async function createReadme() {
-    inquirer
-        .prompt([
+    const getAnswers = await inquirer.prompt([
             {
                 type: "input",
                 message: "Title:",
@@ -17,7 +16,8 @@ async function createReadme() {
             {
                 type: "input",
                 message: "Installation Instructions:",
-                name: "installation"
+                name: "installation",
+                default: "npm i"
             },
             {
                 type: "input",
@@ -25,9 +25,10 @@ async function createReadme() {
                 name: "usage"
             },
             {
-                type: "input",
+                type: "list",
                 message: "License:",
-                name: "license"
+                name: "license",
+                choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "none"]
             },
             {
                 type: "input",
@@ -37,7 +38,8 @@ async function createReadme() {
             {
                 type: "input",
                 message: "Test Instructins:",
-                name: "test"
+                name: "test",
+                default: "npm test"
             },
             {
                 type: "input",
@@ -53,52 +55,88 @@ async function createReadme() {
         .then(function (response) {
 
             const fileName = response.title.toLowerCase().split(' ').join('') + "_README.md";
-
-            // const upperName = response.name.charAt(0).toUpperCase() + response.name.slice(1)
+            let badge;
+            const badgeFunction = response => {
+                if (response.license === "MIT") {
+                    badge = "![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)";
+                } else if (response.license === "APACHE 2.0") {
+                    badge = "![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)";
+                } else if (response.license === "GPL 3.0") {
+                    badge = "![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)";
+                } else if (response.license === "BSD 3") {
+                    badge = "![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)";
+                } else {
+                    badge = "";
+                }
+            }
+            badgeFunction(response);
 
             const userInput =
                 `# ${response.title}
         
 
-## Table of Contents
-
--[Description](#description)
-
--[Installation](#installation)
-
--[Usage](#usage)
-
--[Contribution Guidelines](#contribution-guidelines)
-
--[Tests](#tests)
-
--[Questions](#questions)
-
+${badge}
+                
 ## Description
 
 ${response.description}
 
+
+## Table of Contents
+
+*[Installation](#installation)
+
+*[Usage](#usage)
+
+*[License](#license)
+
+*[Contribution Guidelines](#contribution-guidelines)
+
+*[Tests](#tests)
+
+*[Questions](#questions)
+
+
+
 ## Installation
 
+To install necessary dependencies, run the following command:
+
 ${response.installation}
+
+
 
 ## Usage
 
 ${response.usage}
 
+
+
+## License
+
+This project is licensed under the ${response.license} license.
+
+
+
 ## Contribution Guidelines
 
 ${response.guidelines}
 
+
+
 ## Tests
+
+To run tests, run the following command:
 
 ${response.test}
 
+
+
 ## Questions
 
-${response.username}
+If you have any further questions, you can reach me directly here: ${response.email}
 
-${response.email}
+You can find more of my work at [https://github.com/${response.username}/](https://github.com/${response.username}/).
 `
 
             fs.writeFile(fileName, userInput, function (err) {
