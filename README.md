@@ -14,10 +14,7 @@ This is an app that takes in information from the user about their project, form
 ## Table of Contents
 
 * [Installation](#installation)
-* [Usage](#usage)
 * [License](#license)
-* [Contribution Guidelines](#contribution-guidelines)
-* [Tests](#tests)
 * [Questions](#questions)
 
 
