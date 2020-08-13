@@ -1,7 +1,8 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const generateMarkdown = require("./utils/generateMarkdown.js")
 
-const userAnswers = [
+const questions = [
     {
         type: "input",
         message: "Title:",
@@ -52,90 +53,25 @@ const userAnswers = [
     }
 ]
 
-function userInput(getAnswers, badge) {
-
-    return `# ${getAnswers.title}
-    
-    
-![License](https://img.shields.io/badge/License-${badge}-blue.svg)
-
-## Description
-
-${getAnswers.description}
-
-
-## Table of Contents
-
-*[Installation](#installation)
-
-*[Usage](#usage)
-
-*[License](#license)
-
-*[Contribution Guidelines](#contribution-guidelines)
-
-*[Tests](#tests)
-
-*[Questions](#questions)
-
-
-
-## Installation
-
-To install necessary dependencies, run the following command:
-
-\`\`\` ${getAnswers.installation} \`\`\`
-
-
-
-## Usage
-
-${getAnswers.usage}
-
-
-
-## License
-
-This project is licensed under the ${getAnswers.license} license.
-
-
-
-## Contribution Guidelines
-
-${getAnswers.guidelines}
-
-
-
-## Tests
-
-To run tests, run the following command:
-
-\`\`\` ${getAnswers.test} \`\`\`
-
-
-
-## Questions
-
-If you have any further questions, you can reach me directly here: ${getAnswers.email}
-
-You can find more of my work at [https://github.com/${getAnswers.username}/](https://github.com/${getAnswers.username}/).
-`
+// function to write README file
+function writeToFile(fileName, createFile) {
+    fs.writeFile(fileName, createFile, function (err) {
+        if (err) {
+            console.log(err);
+        }
+        console.log("Your README has been created!")
+    });
 }
 
-async function createReadme() {
+
+async function init() {
     try {
-        const getAnswers = await inquirer.prompt(userAnswers);
-        const badge = await getAnswers.license.split(' ').join('%20');
+        const getAnswers = await inquirer.prompt(questions);
         const fileName = await getAnswers.title.toLowerCase().split(' ').join('') + "_README.md";
-        const createFile = await userInput(getAnswers, badge);
-        fs.writeFile(fileName, createFile, function (err) {
-            if (err) {
-                console.log(err);
-            }
-            console.log("Your README has been created!")
-        });
+        const createFile = await generateMarkdown(getAnswers);
+        const writefile = await writeToFile(fileName, createFile)
     } catch (error) {
         console.log(error)
     }
 }
-createReadme()
+init();
