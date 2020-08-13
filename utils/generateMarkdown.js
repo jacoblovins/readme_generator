@@ -1,9 +1,10 @@
 // function to generate markdown for README
 function generateMarkdown(getAnswers) {
 
-    const badge = getAnswers.license.split(' ').join('%20');
+  // formatting the license string so it works in the badge link
+  const badge = getAnswers.license.split(' ').join('%20');
 
-    return `# ${getAnswers.title}
+  return `# ${getAnswers.title}
       
     
 ![License](https://img.shields.io/badge/License-${badge}-blue.svg)
@@ -67,4 +68,5 @@ You can find more of my work at [https://github.com/${getAnswers.username}/](htt
 `;
 }
 
+// make generateMarkdown function available to index.js
 module.exports = generateMarkdown;
